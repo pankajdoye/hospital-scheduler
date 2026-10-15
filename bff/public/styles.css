@@ -1,0 +1,177 @@
+/* Team D integration console — clean, light, no external dependencies. */
+:root {
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --green: #16a34a;
+  --red: #dc2626;
+  --amber: #d97706;
+  --line: #e5e7eb;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+header {
+  background: #111827;
+  color: #f9fafb;
+  padding: 1.25rem 1.5rem;
+}
+header h1 { margin: 0; font-size: 1.4rem; }
+header .subtitle { margin: 0.25rem 0 0; color: #9ca3af; font-size: 0.9rem; }
+
+.health-banner {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.6rem 1.5rem;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.health-title { font-weight: 600; font-size: 0.85rem; color: var(--muted); }
+.pill {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #374151;
+}
+.pill.up { background: #dcfce7; color: #166534; }
+.pill.down { background: #fee2e2; color: #991b1b; }
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.75rem 1.5rem 0;
+  flex-wrap: wrap;
+}
+.tab {
+  border: 1px solid var(--line);
+  border-bottom: none;
+  background: #eef1f5;
+  padding: 0.6rem 1rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.tab.active { background: var(--card); font-weight: 600; color: var(--accent-dark); }
+
+main {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 0 8px 8px 8px;
+  margin: 0 1.5rem 2rem;
+  padding: 1.25rem 1.5rem;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.tab-panel h2 { margin-top: 0; }
+.note { color: var(--muted); font-size: 0.9rem; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+.form-grid label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--muted); }
+.form-grid label.check { flex-direction: row; align-items: center; gap: 0.5rem; color: var(--ink); }
+input, select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--ink);
+}
+button {
+  padding: 0.55rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+button:hover { background: var(--accent-dark); }
+button.small { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+
+.error { color: var(--red); font-size: 0.9rem; margin: 0.5rem 0; }
+.ok { color: var(--green); font-size: 0.9rem; margin: 0.5rem 0; }
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+.slot-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  background: #f9fafb;
+}
+.slot-card .time { font-weight: 700; font-size: 1.05rem; }
+.slot-card .date { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.5rem; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.data-table th, .data-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+.data-table th { color: var(--muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+.data-table button.cancel { background: var(--red); padding: 0.3rem 0.6rem; font-size: 0.78rem; }
+.data-table code { font-size: 0.75rem; word-break: break-all; }
+
+.cards { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 0.75rem 0 1rem; }
+.card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  min-width: 140px;
+  background: #f9fafb;
+}
+.card .label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; }
+.card .value { font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
+
+.bars { display: flex; flex-direction: column; gap: 0.35rem; max-width: 640px; }
+.bar-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; }
+.bar-row .day { width: 100px; color: var(--muted); }
+.bar-row .track { flex: 1; height: 14px; background: #eef1f5; border-radius: 4px; position: relative; }
+.bar-row .fill-booked { position: absolute; left: 0; top: 0; bottom: 0; background: var(--green); border-radius: 4px 0 0 4px; }
+.bar-row .fill-blocked { position: absolute; top: 0; bottom: 0; background: var(--amber); }
+.bar-row .nums { width: 130px; color: var(--muted); font-size: 0.78rem; }
+
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(17, 24, 39, 0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal.hidden { display: none; }
+.modal-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 440px;
+}
+.modal-box h3 { margin-top: 0; }
+.modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; grid-column: 1 / -1; }
+#book-cancel { background: #6b7280; }
+
+@media (max-width: 640px) {
+  main { margin: 0 0.75rem 1.5rem; padding: 1rem; }
+  .tabs, .health-banner { padding-left: 0.75rem; padding-right: 0.75rem; }
+}

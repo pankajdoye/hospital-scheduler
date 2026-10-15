@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Appointment Scheduler — Team D</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Hospital Appointment Scheduler</h1>
+    <p class="subtitle">Team D · Integration Console</p>
+  </header>
+
+  <div id="health-banner" class="health-banner" aria-live="polite">
+    <span class="health-title">Services</span>
+    <span id="health-bff" class="pill">BFF …</span>
+    <span id="health-teamA" class="pill">Team A …</span>
+    <span id="health-teamB" class="pill">Team B …</span>
+    <span id="health-teamC" class="pill">Team C …</span>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="search">Search &amp; Book</button>
+    <button class="tab" data-tab="appointments">Appointments</button>
+    <button class="tab" data-tab="patients">Patients</button>
+    <button class="tab" data-tab="scheduling">Scheduling</button>
+    <button class="tab" data-tab="analytics">Analytics</button>
+    <button class="tab" data-tab="settings">Settings</button>
+    <button class="tab" data-tab="audit">Audit</button>
+  </nav>
+
+  <main>
+    <!-- SEARCH & BOOK -->
+    <section id="tab-search" class="tab-panel active">
+      <h2>Search &amp; Book <button id="reload-providers" class="small">Refresh</button></h2>
+      <form id="search-form" class="form-grid">
+        <label>Provider
+          <select id="search-provider" required></select>
+        </label>
+        <label>Date from <input type="date" id="search-from" required /></label>
+        <label>Date to <input type="date" id="search-to" required /></label>
+        <label>Duration (min) <input type="number" id="search-duration" value="30" min="1" required /></label>
+        <label>Preference
+          <select id="search-pref">
+            <option>Any Time</option>
+            <option>Morning</option>
+            <option>Afternoon</option>
+            <option>Evening</option>
+          </select>
+        </label>
+        <button type="submit">Search slots</button>
+      </form>
+      <div id="search-error" class="error"></div>
+      <div id="slots" class="slot-grid"></div>
+    </section>
+
+    <!-- APPOINTMENTS -->
+    <section id="tab-appointments" class="tab-panel">
+      <h2>Appointments <button id="reload-bookings" class="small">Refresh</button></h2>
+      <div id="bookings-error" class="error"></div>
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Patient</th><th>Provider</th><th>Start</th><th>State</th><th>Purpose</th><th></th></tr></thead>
+        <tbody id="bookings-body"></tbody>
+      </table>
+    </section>
+
+    <!-- PATIENTS -->
+    <section id="tab-patients" class="tab-panel">
+      <h2>Register Patient</h2>
+      <form id="patient-form" class="form-grid">
+        <label>Full name <input id="p-name" required maxlength="120" /></label>
+        <label>Gender <input id="p-gender" placeholder="Male / Female / Other" required maxlength="20" /></label>
+        <label>Date of birth <input type="date" id="p-dob" required /></label>
+        <label>Phone (10 digits) <input id="p-phone" required pattern="\d{10}" maxlength="10" title="Exactly 10 digits" /></label>
+        <label>Email (@gmail.com) <input type="email" id="p-email" required placeholder="name@gmail.com" /></label>
+        <label>Address <input id="p-address" maxlength="255" /></label>
+        <button type="submit">Register</button>
+      </form>
+      <div id="patient-error" class="error"></div>
+      <h3>Patients</h3>
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Gender</th><th>DOB</th><th>Phone</th><th>Email</th></tr></thead>
+        <tbody id="patients-body"></tbody>
+      </table>
+    </section>
+
+    <!-- SCHEDULING -->
+    <section id="tab-scheduling" class="tab-panel">
+      <h2>Scheduling Engine (Team A)</h2>
+      <p class="note">Team A's engine has slot grids for all three providers (PROV001/002/003 — PROV002/003 added by the Team D integration patch; Team A to confirm their real slots).</p>
+      <form id="sched-form" class="form-grid">
+        <label>Provider <select id="sched-provider" required></select></label>
+        <label>Policy
+          <select id="sched-policy">
+            <option>FCFS</option>
+            <option>PRIORITY</option>
+            <option>EARLIEST-FIT</option>
+            <option>URGENCY-WEIGHTED</option>
+          </select>
+        </label>
+        <button type="submit">Run scheduler</button>
+      </form>
+      <div id="sched-error" class="error"></div>
+      <h3>Metrics</h3>
+      <div id="sched-metrics" class="cards"></div>
+      <h3>Queue</h3>
+      <table class="data-table">
+        <thead><tr><th>#</th><th>Request</th><th>Priority</th><th>State</th><th>Slot</th><th>Est. start</th></tr></thead>
+        <tbody id="sched-queue-body"></tbody>
+      </table>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="tab-analytics" class="tab-panel">
+      <h2>Analytics (Team B)</h2>
+      <form id="analytics-form" class="form-grid">
+        <label>Provider <select id="analytics-provider" required></select></label>
+        <label>From <input type="date" id="analytics-from" /></label>
+        <label>To <input type="date" id="analytics-to" /></label>
+        <button type="submit">Load</button>
+      </form>
+      <div id="analytics-error" class="error"></div>
+      <div id="analytics-cards" class="cards"></div>
+      <h3>Date-wise report</h3>
+      <div id="report-bars" class="bars"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="tab-settings" class="tab-panel">
+      <h2>Settings (Team B)</h2>
+      <form id="settings-form" class="form-grid">
+        <label>Default duration (min) <input type="number" id="s-duration" min="1" required /></label>
+        <label>Time format
+          <select id="s-timeformat"><option value="12">12-hour</option><option value="24">24-hour</option></select>
+        </label>
+        <label class="check"><input type="checkbox" id="s-autorefresh" /> Auto refresh</label>
+        <label class="check"><input type="checkbox" id="s-conflicts" /> Conflict alerts</label>
+        <label class="check"><input type="checkbox" id="s-summary" /> Daily summary</label>
+        <button type="submit">Save settings</button>
+      </form>
+      <div id="settings-error" class="error"></div>
+      <div id="settings-ok" class="ok"></div>
+    </section>
+
+    <!-- AUDIT -->
+    <section id="tab-audit" class="tab-panel">
+      <h2>Audit Trail (Team C)</h2>
+      <button id="reload-audit" class="small">Refresh</button>
+      <div id="audit-error" class="error"></div>
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Actor</th><th>Action</th><th>Table</th><th>Record</th><th>Correlation</th><th>At</th></tr></thead>
+        <tbody id="audit-body"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Booking modal -->
+  <div id="book-modal" class="modal hidden">
+    <div class="modal-box">
+      <h3>Confirm booking</h3>
+      <p id="book-slot-summary"></p>
+      <form id="book-form" class="form-grid">
+        <label>Patient <select id="book-patient" required></select></label>
+        <label>Purpose <input id="book-purpose" placeholder="General checkup" maxlength="255" /></label>
+        <div class="modal-actions">
+          <button type="button" id="book-cancel">Cancel</button>
+          <button type="submit">Confirm booking</button>
+        </div>
+      </form>
+      <div id="book-error" class="error"></div>
+      <div id="book-ok" class="ok"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

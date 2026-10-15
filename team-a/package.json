@@ -1,0 +1,1 @@
+{"dependencies":{"cors":"^2.8.5","express":"^5.1.0"},"description":"Team A Booking Queue and Slot Scheduling Engine (runs on PORT env or 3000)","main":"server.js","name":"team-a-scheduling-engine","scripts":{"dev":"node server.js","start":"node server.js"},"version":"1.0.0"}

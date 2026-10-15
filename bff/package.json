@@ -1,0 +1,1 @@
+{"dependencies":{"cors":"^2.8.5","dotenv":"^16.4.5","express":"^4.21.2"},"description":"Team D backend-for-frontend: normalizes Team A/B/C into one API for the SPA","main":"server.js","name":"team-d-bff","private":true,"scripts":{"start":"node server.js"},"version":"1.0.0"}
